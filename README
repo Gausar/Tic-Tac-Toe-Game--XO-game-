@@ -17,5 +17,3 @@ If you are playing with a friend, use each other's hostname and port.
 
 # Additional Notes
 You can further improve this code to handle scenarios where a player enters a position that has already been taken. Currently, the code does not prompt for another position in such cases.
-
-Thank you :)
