@@ -1,0 +1,21 @@
+# XO Game
+# Tic Tac Toe Game
+
+# About the Code
+While implementing this game, I utilized the csapp.c code available at Carnegie Mellon University's website. This code is publicly accessible and can be used by anyone.
+Link is here: https://csapp.cs.cmu.edu/3e/code.html
+
+# About How to Play
+If you are playing it on your computer locally, use localhost and port 8080.
+You can compile the server code as follows:
+        gcc server.c csapp.c -o server
+        ./server 8080
+For the client code:
+        gcc client.c csapp.c -o client
+        ./client localhost 8080
+If you are playing with a friend, use each other's hostname and port.
+
+# Additional Notes
+You can further improve this code to handle scenarios where a player enters a position that has already been taken. Currently, the code does not prompt for another position in such cases.
+
+Thank you :)
