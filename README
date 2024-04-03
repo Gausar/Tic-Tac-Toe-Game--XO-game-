@@ -13,7 +13,7 @@ You can compile the server code as follows:
 For the client code:
         gcc client.c csapp.c -o client
         ./client localhost 8080
-If you are playing with a friend, use each other's hostname and port.
+If you are playing with a friend, use each other's hostname and port. Five in a row (or column, diagnol) wins.
 
 # Additional Notes
 You can further improve this code to handle scenarios where a player enters a position that has already been taken. Currently, the code does not prompt for another position in such cases.
