@@ -1,3 +1,7 @@
+/*
+Хэрвээ та энэ кодыг харж байгаа бол эхлээд Server талыг ажиллуулаарай.
+*/
+
 #include "csapp.h"
 
 char board[20][20];
@@ -30,14 +34,14 @@ void draw_board(char board[][20]) {
         printf(" --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---\n");
     }
 }
-
+int final = 0;
 struct position {
     int x;
     int y;
 };
 typedef struct position position;
 int check_winner(int x, int y, char player);
-void echo(int connfd);
+//void echo(int connfd);
 int run_game(position *pos);
 void run_game_server(position *pos);
 
@@ -63,43 +67,43 @@ int main(int argc, char **argv) {
     }
 
     clientfd = open_clientfd(host, port);
-    
     Rio_readinitb(&rio, clientfd);
 
     printf("Please start a game!\n");
     while (1) {
 		
-		pthread_t thread;
         while(1){
+            int k;
             printf("enter position (x, y): \n");
             scanf("%d %d", &client_pos.x, &client_pos.y);
             client_pos.x--;
             client_pos.y--;
-            int k = run_game(&client_pos);
+            if(client_pos.x <= 20 && client_pos.y <= 20){
+                k = run_game(&client_pos);
+            }
             if(k == 1){
-                Rio_writen(clientfd, &client_pos, sizeof(position));
                 break;
             }
         }
+        Rio_writen(clientfd, &client_pos, sizeof(position));
+        if(final == 1){
+            Close(clientfd);
+        }
 		Rio_readn(clientfd, &server, sizeof(position));
 		run_game_server(&server);
-        //echo(connfd);
-		//Close(connfd);
     }
-
-    Close(clientfd);
-    exit(0);
+    return 0;
 }
-void echo(int connfd){
-	size_t n;
-	char buf[MAXLINE];
-	rio_t rio;
-	Rio_readinitb(&rio, connfd);
-	while((n = Rio_readlineb(&rio, buf, MAXLINE)) != 0){
-		printf("server received %d bytes\n", (int)n);
-		Rio_writen(connfd, buf, n);
-	}
-}
+// void echo(int connfd){
+// 	size_t n;
+// 	char buf[MAXLINE];
+// 	rio_t rio;
+// 	Rio_readinitb(&rio, connfd);
+// 	while((n = Rio_readlineb(&rio, buf, MAXLINE)) != 0){
+// 		printf("server received %d bytes\n", (int)n);
+// 		Rio_writen(connfd, buf, n);
+// 	}
+// }
 
 int check_winner(int x, int y, char player) {
     int i, j;
@@ -162,7 +166,7 @@ int run_game(position *pos) {
         draw_board(board);
         if (check_winner(x, y, player)) {
             printf("Congrats, you win!\n");
-            exit(0);
+            final = 1;
         }
         return 1;
     } else {
