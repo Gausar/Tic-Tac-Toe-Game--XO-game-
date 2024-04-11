@@ -40,7 +40,7 @@ struct position{
 	int y;
 };
 typedef struct position position;
-//void echo(int connfd);
+
 int run_game(position * pos);
 int check_winner(int x, int y, char player);
 void run_game_client(position *pos);
@@ -49,6 +49,7 @@ int main(int argc, char **argv){
 	int listenfd, connfd;
 	socklen_t clientlen;
 	position server, client_pos;
+
 	for(int i = 0; i < 20; i++){
 		for(int j = 0; j < 20; j++){
 			board[i][j] = ' ';
@@ -64,7 +65,6 @@ int main(int argc, char **argv){
 	printf("Connected to (%s %s)\n", client_hostname, client_port);
 
 	while(1){
-		
 		Rio_readn(connfd, &client_pos, sizeof(position));
 		run_game_client(&client_pos);
 		while(1){
@@ -87,7 +87,6 @@ int main(int argc, char **argv){
 	}
 	return 0;
 }
-
 int check_winner(int x, int y, char player) {
     int i, j;
     int count;
@@ -143,7 +142,7 @@ int run_game(position *params) {
 	int y;
     x = params->x;
     y = params->y;
-    char player = 'o'; //ekhnii toglogch o baival
+    char player = 'o'; //server taliin toglogch o baival
 
     if (board[x][y] == ' ') {
         board[x][y] = player;
@@ -162,7 +161,7 @@ int run_game(position *params) {
 void run_game_client(position *params) {
     int x = params->x;
     int y = params->y;
-    char player = 'x'; //hoyrdahi toglogch x eer yavna
+    char player = 'x'; //client taliin toglogch x eer yavna
 
     if (board[x][y] == ' ') {
         board[x][y] = player;
